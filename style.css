@@ -1,11 +1,5 @@
-@font-face {
-  font-family: Montserrat;
-  src: url('https://fonts.googleapis.com/css?family=Montserrat');
-}
-
 body {
   background-color: darkslategray;
-  font-family: "Montserrat";
   color: white;
 }
 
