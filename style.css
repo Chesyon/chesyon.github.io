@@ -1,8 +1,18 @@
 body {
-  background-color: darkslategray;
+  background-image: url('star.png');
+  background-repeat: repeat;
+  background-size: 128px;
+  background-color: rgb(66, 0, 99);
+  animation: moveBackground 10s linear infinite;
+  backdrop-filter: blur(5px);
+  height: 100vh; /* Ensure the body takes up the full viewport height */
   color: white;
 }
 
+@keyframes moveBackground {
+  from { background-position: 0px 0px; }
+  to { background-position: 512px 512px; }
+}
 h1 {
   text-align: center;
 }
