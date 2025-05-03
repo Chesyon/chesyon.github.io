@@ -1,28 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Show Image</title>
+  <title>Nearest Neighbor Upscale</title>
+  <style>
+    body { font-family: sans-serif; }
+    canvas { image-rendering: pixelated; border: 1px solid #ccc; }
+  </style>
 </head>
 <body>
-    <h1>Image Viewer</h1>
-    <div id="image-container"></div>
+  <h2>Upscaled Image (13x)</h2>
+  <canvas id="sourceCanvas" style="display:none;"></canvas>
+  <canvas id="outputCanvas"></canvas>
+  <p id="status"></p>
 
-    <script>
-        // Get the image URL from the query parameter
-        const params = new URLSearchParams(window.location.search);
-        const imageUrl = params.get('img');
+  <script>
+    function getImageURLFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("img");
+    }
 
-        if (imageUrl) {
-            const img = document.createElement('img');
-            img.src = imageUrl;
-            img.alt = "Loaded from URL parameter";
-            img.style.maxWidth = "100%";
-            document.getElementById('image-container').appendChild(img);
-        } else {
-            document.getElementById('image-container').innerText = "No image URL provided.";
+    function nearestNeighborUpscale(imageElement, scaleFactor) {
+      const srcCanvas = document.getElementById("sourceCanvas");
+      const srcCtx = srcCanvas.getContext("2d");
+
+      srcCanvas.width = imageElement.width;
+      srcCanvas.height = imageElement.height;
+      srcCtx.drawImage(imageElement, 0, 0);
+
+      const srcWidth = srcCanvas.width;
+      const srcHeight = srcCanvas.height;
+      const srcData = srcCtx.getImageData(0, 0, srcWidth, srcHeight);
+
+      const dstWidth = srcWidth * scaleFactor;
+      const dstHeight = srcHeight * scaleFactor;
+
+      const dstCanvas = document.getElementById("outputCanvas");
+      dstCanvas.width = dstWidth;
+      dstCanvas.height = dstHeight;
+      const dstCtx = dstCanvas.getContext("2d");
+      const dstImageData = dstCtx.createImageData(dstWidth, dstHeight);
+
+      for (let y = 0; y < dstHeight; y++) {
+        for (let x = 0; x < dstWidth; x++) {
+          const srcX = Math.floor(x / scaleFactor);
+          const srcY = Math.floor(y / scaleFactor);
+          const srcIndex = (srcY * srcWidth + srcX) * 4;
+          const dstIndex = (y * dstWidth + x) * 4;
+
+          dstImageData.data[dstIndex]     = srcData.data[srcIndex];
+          dstImageData.data[dstIndex + 1] = srcData.data[srcIndex + 1];
+          dstImageData.data[dstIndex + 2] = srcData.data[srcIndex + 2];
+          dstImageData.data[dstIndex + 3] = srcData.data[srcIndex + 3];
         }
-    </script>
+      }
+
+      dstCtx.putImageData(dstImageData, 0, 0);
+    }
+
+    const status = document.getElementById("status");
+    const imageURL = getImageURLFromQuery();
+
+    if (imageURL) {
+      const image = new Image();
+      image.crossOrigin = "Anonymous"; // Required for cross-origin images
+      image.src = imageURL;
+
+      image.onload = () => {
+        nearestNeighborUpscale(image, 13);
+        status.textContent = "Image successfully upscaled!";
+      };
+
+      image.onerror = () => {
+        status.textContent = "Failed to load image. Check the URL and CORS settings.";
+      };
+    } else {
+      status.textContent = "Please provide an image URL using ?img= in the address bar.";
+    }
+  </script>
 </body>
 </html>
-
