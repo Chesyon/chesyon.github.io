@@ -41,7 +41,7 @@ app.get('/upscale', async (req, res) => {
   try {
     const response = await fetch(imgURL);
     if (!response.ok) throw new Error('Image fetch failed');
-    const buffer = await response.buffer();
+    const buffer = await response.buffer;
     const img = await loadImage(buffer);
     
     const scaleFactor = 13;
