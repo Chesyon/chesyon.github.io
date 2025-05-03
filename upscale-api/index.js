@@ -1,5 +1,4 @@
 const express = require('express');
-const fetch = require('node-fetch');
 const { createCanvas, loadImage } = require('canvas');
 
 const app = express();
