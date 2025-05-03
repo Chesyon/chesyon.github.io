@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Image</title>
+</head>
+<body>
+    <h1>Image Viewer</h1>
+    <div id="image-container"></div>
+
+    <script>
+        // Get the image URL from the query parameter
+        const params = new URLSearchParams(window.location.search);
+        const imageUrl = params.get('img');
+
+        if (imageUrl) {
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = "Loaded from URL parameter";
+            img.style.maxWidth = "100%";
+            document.getElementById('image-container').appendChild(img);
+        } else {
+            document.getElementById('image-container').innerText = "No image URL provided.";
+        }
+    </script>
+</body>
+</html>
+
