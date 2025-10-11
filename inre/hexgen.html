@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat">
+    <style>
+        body {
+          font-family: "Montserrat", sans-serif;
+        }
+    </style>
+    <script type="text/javascript" src='hexgen.js'>
+    </script>
+    <title>INRE file creator</title>
+    <meta charset="utf-8" />
+</head>
+<link rel="stylesheet" href="../style.css">
+
+<body>
+    <h1>INRE file creator</h1>
+    Creates a file to be used with the INput REplay system. If you don't know what that is, you probably shouldn't be here (unless I sent this page to you myself.) The system's still a work in progress, after all. Paste the contents of Lappy's sheet output here.<br>
+    <textarea id="text-input" rows="20" cols="10"></textarea><br>
+    <button onclick="main()">Go!</button><br>
+    <div id="error-message" style="display: none">Something went wrong. Make sure your input is correct! Error details are below:</div><br>
+    <div id="error-details" style="display: none">placeholder</div>
+</body>
+
+</html>
